@@ -3,6 +3,8 @@
 ;; Author: Wayne Jensen
 ;; Version: 0.1
 ;;
+;; Added horizontal scroll
+;;
 ;; modification of the following work:
 ;; Emulate_Scrolling_Middle_Button.ahk
 ;; Author: Erik Elmore <erik@ironsavior.net>
