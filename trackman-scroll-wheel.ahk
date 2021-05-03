@@ -26,7 +26,7 @@
 ;#NoTrayIcon
 
 ;; Higher numbers mean less sensitivity
-esmb_Threshold = 4
+esmb_Threshold = 5
 
 ;; This key/Button activates scrolling
 esmb_TriggerKey = XButton1
@@ -47,6 +47,7 @@ esmb_TriggerKeyDown:
   esmb_FirstIteration = y
   esmb_KeyDown = y
   MouseGetPos, esmb_OrigX, esmb_OrigY, esmb_HoverWnd, esmb_HoverCtl
+
   ;;ControlFocus, ahk_class %esmb_HoverCtl%, ahk_id %esmb_HoverWnd%
   esmb_AccumulatedDistance = 0
   esmb_HAccumulatedDistance = 0
@@ -64,13 +65,17 @@ esmb_CheckForScrollEventAndExecute:
     return
 
   MouseGetPos, esmb_NewX, esmb_NewY, id, fcontrol, 1
+
   esmb_Distance := esmb_NewY - esmb_OrigY
-  if esmb_Distance
+  if esmb_Distance != 0
     esmb_Moved = y
 
   esmb_HDistance := esmb_NewX - esmb_OrigX
-  if esmb_HDistance
+  if esmb_HDistance != 0
     esmb_HMoved = y
+
+  if esmb_Moved = y and esmb_HMoved = y
+    return
 
   esmb_AccumulatedDistance := (esmb_AccumulatedDistance + esmb_Distance)
   esmb_HAccumulatedDistance := (esmb_HAccumulatedDistance + esmb_HDistance)
@@ -100,7 +105,9 @@ esmb_CheckForScrollEventAndExecute:
     Loop % esmb_HTicks {
       MouseClick, %esmb_HWheelDirection%
     }
+    ;MouseMove,esmb_OrigX,esmb_OrigY,0
+    DllCall("SetCursorPos", "int", esmb_OrigX, "int", esmb_OrigY)
+    ;Tooltip, (%esmb_NewX% . ' ' . %esmb_NewY% . ' ' . %esmb_OrigX% . ' ' . %esmb_OrigY%), 10, 100, 1
   }
 
-  MouseMove,esmb_OrigX,esmb_OrigY,0
 return
